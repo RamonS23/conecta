@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+
+<title>Conecta</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#f3f3f5;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    color:#18181b;
+}
+
+.app{
+    width:100%;
+    max-width:430px;
+    min-height:100vh;
+    margin:auto;
+    background:white;
+    overflow:hidden;
+}
+
+/* HEADER */
+
+.header{
+    height:62px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-bottom:1px solid #eee;
+}
+
+.logo{
+    color:#ff3366;
+    font-size:23px;
+    font-weight:800;
+}
+
+/* PERFIL */
+
+#profileScreen{
+    min-height:100vh;
+    background:linear-gradient(180deg,#ffe5ed 0%,#fff 45%);
+}
+
+.profile-top{
+    text-align:center;
+    padding:20px;
+}
+
+.photo-wrapper{
+    width:205px;
+    height:205px;
+    margin:auto;
+    position:relative;
+}
+
+.profile-photo{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center 25%;
+    border-radius:50%;
+    border:6px solid white;
+    box-shadow:0 7px 25px rgba(0,0,0,.15);
+}
+
+.online{
+    position:absolute;
+    bottom:-5px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#e9ffe9;
+    color:#148a2d;
+    padding:7px 15px;
+    border-radius:25px;
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+}
+
+.name{
+    margin-top:25px;
+    font-size:26px;
+    font-weight:800;
+}
+
+.location{
+    margin-top:8px;
+}
+
+.distance{
+    color:#666;
+    margin-top:5px;
+}
+
+/* CARD */
+
+.card{
+    margin:10px 18px 25px;
+    padding:18px;
+    border:1px solid #eee;
+    border-radius:18px;
+    background:white;
+    box-shadow:0 7px 25px rgba(0,0,0,.05);
+}
+
+.card-title{
+    color:#ff3366;
+    font-weight:800;
+}
+
+.bio{
+    font-size:14px;
+    line-height:1.5;
+    padding:10px 0 15px;
+    border-bottom:1px solid #eee;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:9px 0;
+    font-size:14px;
+}
+
+.row-label{
+    color:#555;
+}
+
+.fake-button{
+    margin-top:12px;
+    padding:14px;
+    border-radius:30px;
+    text-align:center;
+    color:white;
+    font-weight:800;
+    background:linear-gradient(90deg,#ff4778,#ff2760);
+}
+
+/* PANTALLAS */
+
+.screen{
+    display:none;
+    min-height:100vh;
+    padding:24px 18px;
+    background:white;
+    text-align:center;
+}
+
+.screen-title{
+    color:#ff3366;
+    font-weight:800;
+    font-size:22px;
+    margin-bottom:35px;
+}
+
+/* RADAR */
+
+.radar{
+    width:180px;
+    height:180px;
+    margin:30px auto 45px;
+    border-radius:50%;
+    position:relative;
+
+    background:
+    radial-gradient(
+        circle,
+        #ff4778 0 17%,
+        #ffc2d2 18% 32%,
+        #ffe0e8 33% 48%,
+        #fff0f4 49% 64%,
+        #fff 65%
+    );
+
+    animation:pulse 1.4s infinite;
+}
+
+.radar-heart{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+    color:white;
+}
+
+.search-message{
+    font-size:20px;
+    font-weight:800;
+    margin-bottom:25px;
+}
+
+.steps{
+    text-align:left;
+    max-width:310px;
+    margin:auto;
+}
+
+.step{
+    padding:8px 0;
+    color:#555;
+}
+
+.step::before{
+    content:"●";
+    color:#ffb1c5;
+    margin-right:10px;
+}
+
+.step.done::after{
+    content:"✓";
+    float:right;
+    color:#ff3366;
+}
+
+.big-percent{
+    color:#ff3366;
+    font-size:42px;
+    font-weight:800;
+    margin-top:25px;
+}
+
+.progress-box{
+    width:100%;
+    height:12px;
+    background:#ffe3eb;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:15px;
+}
+
+.progress{
+    height:100%;
+    width:0%;
+    background:#ff3366;
+    transition:.25s;
+}
+
+/* RESULTADOS */
+
+.result-number{
+    width:135px;
+    height:135px;
+    margin:20px auto 10px;
+    border-radius:50%;
+    border:3px solid #ffd4df;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:58px;
+    font-weight:800;
+    color:#ff3366;
+}
+
+.result-message{
+    font-size:18px;
+    font-weight:800;
+    margin-bottom:22px;
+}
+
+.match{
+    display:flex;
+    align-items:center;
+    text-align:left;
+    border:1px solid #eee;
+    border-radius:16px;
+    padding:12px;
+    margin:10px 0;
+    box-shadow:0 3px 10px rgba(0,0,0,.03);
+}
+
+.match-photo{
+    width:62px;
+    height:62px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-right:13px;
+    border:2px solid #ffd8e3;
+}
+
+.match-info{
+    flex:1;
+}
+
+.match-name{
+    font-weight:800;
+    font-size:16px;
+}
+
+.match-distance{
+    color:#666;
+    font-size:13px;
+    margin:3px 0;
+}
+
+.compatibility{
+    display:inline-block;
+    background:#ffeaf0;
+    color:#ff3366;
+    padding:4px 9px;
+    border-radius:15px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.heart-right{
+    color:#ff3366;
+    font-size:27px;
+}
+
+/* TEMPORIZADOR */
+
+.timer-box{
+    margin-top:25px;
+    border:1px solid #ffd2df;
+    background:#fff5f8;
+    padding:15px;
+    border-radius:15px;
+}
+
+.timer-title{
+    font-size:13px;
+    color:#555;
+}
+
+.timer{
+    font-size:30px;
+    font-weight:800;
+    color:#ff3366;
+    margin-top:5px;
+}
+
+/* BROMA */
+
+#prankScreen{
+    display:none;
+    min-height:100vh;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+    text-align:center;
+    color:white;
+
+    background:
+    radial-gradient(circle at center,#3b003d,#100016 65%,#050007);
+}
+
+.emoji{
+    font-size:95px;
+    animation:bounce .7s infinite alternate;
+}
+
+.prank-title{
+    font-size:38px;
+    font-weight:900;
+    color:#ff4c96;
+    margin:20px 0;
+    text-shadow:0 0 20px #ff006e;
+}
+
+.prank-message{
+    line-height:1.7;
+    font-size:19px;
+}
+
+.disclaimer{
+    margin-top:35px;
+    color:#ccc;
+    font-size:12px;
+}
+
+/* CORAZONES */
+
+.heart{
+    position:fixed;
+    bottom:-40px;
+    pointer-events:none;
+    z-index:100;
+    animation:fly 4s linear forwards;
+}
+
+@keyframes pulse{
+    50%{
+        transform:scale(1.07);
+    }
+}
+
+@keyframes bounce{
+    to{
+        transform:translateY(-12px) rotate(4deg);
+    }
+}
+
+@keyframes fly{
+    to{
+        transform:translateY(-110vh) rotate(360deg);
+        opacity:0;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- PERFIL -->
+
+<div id="profileScreen">
+
+    <div class="header">
+        <div class="logo">💗 Conecta</div>
+    </div>
+
+    <div class="profile-top">
+
+        <div class="photo-wrapper">
+
+            <img
+            src="uriel.jpg"
+            class="profile-photo"
+            alt="Foto de perfil">
+
+            <div class="online">
+                ● Activo ahora
+            </div>
+
+        </div>
+
+        <div class="name">
+            Uriel Alejandro, 32
+        </div>
+
+        <div class="location">
+            📍 Guadalajara, Jal., México
+        </div>
+
+        <div class="distance">
+            A 6 km de distancia
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Sobre mí
+        </div>
+
+        <div class="bio">
+            Me gusta conocer gente nueva,
+            salir a lugares interesantes
+            y disfrutar la vida.
+        </div>
+
+        <div class="row">
+            <span class="row-label">💗 Buscando</span>
+            <span>Relación seria</span>
+        </div>
+
+        <div class="row">
+            <span class="row-label">⚡ Altura</span>
+            <span>1.75 m</span>
+        </div>
+
+        <div class="row">
+            <span class="row-label">💼 Profesión</span>
+            <span>Ingeniero</span>
+        </div>
+
+        <div class="row">
+            <span class="row-label">🎓 Estudios</span>
+            <span>Universitario</span>
+        </div>
+
+        <div class="row">
+            <span class="row-label">💘 Intereses</span>
+            <span>Viajes, música, cine</span>
+        </div>
+
+        <div class="fake-button">
+            ♥ Me interesa
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- BUSQUEDA -->
+
+<div id="searchScreen" class="screen">
+
+    <div class="screen-title">
+        Buscando coincidencias
+    </div>
+
+    <div class="radar">
+        <div class="radar-heart">
+            ♥
+        </div>
+    </div>
+
+    <div class="search-message">
+        Buscando personas<br>
+        compatibles para ti...
+    </div>
+
+    <div class="steps">
+
+        <div class="step" id="s1">
+            Analizando preferencias...
+        </div>
+
+        <div class="step" id="s2">
+            Buscando en Guadalajara...
+        </div>
+
+        <div class="step" id="s3">
+            Comparando intereses...
+        </div>
+
+        <div class="step" id="s4">
+            Calculando compatibilidad...
+        </div>
+
+        <div class="step" id="s5">
+            Casi terminamos...
+        </div>
+
+    </div>
+
+    <div
+    class="big-percent"
+    id="percent">
+        0%
+    </div>
+
+    <div class="progress-box">
+
+        <div
+        class="progress"
+        id="progress">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- RESULTADOS -->
+
+<div id="resultsScreen" class="screen">
+
+    <div class="screen-title">
+        ¡Coincidencias encontradas!
+    </div>
+
+    <div class="result-number">
+        17
+    </div>
+
+    <div class="result-message">
+        personas han mostrado interés<br>
+        en tu perfil
+    </div>
+
+
+    <!-- ANDREA -->
+
+    <div class="match">
+
+        <img
+        src="andrea.jpg"
+        class="match-photo"
+        alt="Andrea">
+
+        <div class="match-info">
+
+            <div class="match-name">
+                Andrea, 28
+            </div>
+
+            <div class="match-distance">
+                A 4 km de distancia
+            </div>
+
+            <span class="compatibility">
+                95% compatible
+            </span>
+
+        </div>
+
+        <div class="heart-right">
+            ♡
+        </div>
+
+    </div>
+
+
+    <!-- MARIANA -->
+
+    <div class="match">
+
+        <img
+        src="mariana.jpg"
+        class="match-photo"
+        alt="Mariana">
+
+        <div class="match-info">
+
+            <div class="match-name">
+                Mariana, 31
+            </div>
+
+            <div class="match-distance">
+                A 7 km de distancia
+            </div>
+
+            <span class="compatibility">
+                93% compatible
+            </span>
+
+        </div>
+
+        <div class="heart-right">
+            ♡
+        </div>
+
+    </div>
+
+
+    <!-- FERNANDA -->
+
+    <div class="match">
+
+        <img
+        src="fernanda.jpg"
+        class="match-photo"
+        alt="Fernanda">
+
+        <div class="match-info">
+
+            <div class="match-name">
+                Fernanda, 29
+            </div>
+
+            <div class="match-distance">
+                A 5 km de distancia
+            </div>
+
+            <span class="compatibility">
+                91% compatible
+            </span>
+
+        </div>
+
+        <div class="heart-right">
+            ♡
+        </div>
+
+    </div>
+
+
+    <!-- SOFIA -->
+
+    <div class="match">
+
+        <img
+        src="sofia.jpg"
+        class="match-photo"
+        alt="Sofía">
+
+        <div class="match-info">
+
+            <div class="match-name">
+                Sofía, 27
+            </div>
+
+            <div class="match-distance">
+                A 3 km de distancia
+            </div>
+
+            <span class="compatibility">
+                89% compatible
+            </span>
+
+        </div>
+
+        <div class="heart-right">
+            ♡
+        </div>
+
+    </div>
+
+
+    <!-- CUENTA REGRESIVA -->
+
+    <div class="timer-box">
+
+        <div class="timer-title">
+            ⏱️ Actualizando coincidencias en tiempo real...
+        </div>
+
+        <div
+        class="timer"
+        id="timer">
+            00:16
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- BROMA -->
+
+<div id="prankScreen">
+
+    <div>
+
+        <div class="emoji">
+            😂
+        </div>
+
+        <div class="prank-title">
+            ¡TE LA CREÍSTE!
+        </div>
+
+        <div class="prank-message">
+
+            Uriel 😂
+
+            <br><br>
+
+            Este perfil
+            <b>NO fue creado realmente.</b>
+
+            <br><br>
+
+            Nadie está buscando citas
+            con tu perfil.
+
+            <br><br>
+
+            Todo fue una broma
+            para hacerte reír 😜
+
+        </div>
+
+        <div style="font-size:45px;margin-top:25px;">
+            🤡 💘 😂 🤡 💘 😂
+        </div>
+
+        <div class="disclaimer">
+
+            Espero haya funcionado todo bien,
+            arriba las mamas solteras
+
+            <br>
+
+            ,Arriba las que no tienen dentadura
+            😂😂😂😂😂😂
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const profile =
+document.getElementById("profileScreen");
+
+const search =
+document.getElementById("searchScreen");
+
+const results =
+document.getElementById("resultsScreen");
+
+const prank =
+document.getElementById("prankScreen");
+
+const progress =
+document.getElementById("progress");
+
+const percent =
+document.getElementById("percent");
+
+const timer =
+document.getElementById("timer");
+
+let value = 0;
+
+
+/* PERFIL VISIBLE 4 SEGUNDOS */
+
+window.addEventListener("load", function(){
+
+    setTimeout(startSearch,4000);
+
+});
+
+
+/* BUSQUEDA */
+
+function startSearch(){
+
+    profile.style.display="none";
+
+    search.style.display="block";
+
+
+    const interval=setInterval(function(){
+
+        value +=
+        Math.floor(Math.random()*4)+1;
+
+
+        if(value>100){
+
+            value=100;
+
+        }
+
+
+        progress.style.width=
+        value+"%";
+
+        percent.innerText=
+        value+"%";
+
+
+        if(value>=18)
+            s1.classList.add("done");
+
+        if(value>=38)
+            s2.classList.add("done");
+
+        if(value>=58)
+            s3.classList.add("done");
+
+        if(value>=78)
+            s4.classList.add("done");
+
+        if(value>=95)
+            s5.classList.add("done");
+
+
+        if(value>=100){
+
+            clearInterval(interval);
+
+            setTimeout(
+                showResults,
+                1200
+            );
+
+        }
+
+    },170);
+
+}
+
+
+/* RESULTADOS */
+
+function showResults(){
+
+    search.style.display="none";
+
+    results.style.display="block";
+
+    createHearts();
+
+    startCountdown();
+
+}
+
+
+/* CUENTA REGRESIVA DE 16 SEGUNDOS */
+
+function startCountdown(){
+
+    let seconds=10;
+
+
+    const countdown=setInterval(function(){
+
+        seconds--;
+
+
+        let formatted=
+        seconds<10
+        ? "00:0"+seconds
+        : "00:"+seconds;
+
+
+        timer.innerText=
+        formatted;
+
+
+        /*
+        Pequeño efecto para hacer
+        parecer que llegan nuevas
+        coincidencias.
+        */
+
+        if(seconds===11){
+
+            timer.parentElement
+            .querySelector(".timer-title")
+            .innerText=
+            "💘 Nueva persona interesada detectada...";
+
+        }
+
+
+        if(seconds===7){
+
+            timer.parentElement
+            .querySelector(".timer-title")
+            .innerText=
+            "🔥 Tu perfil está recibiendo visitas...";
+
+        }
+
+
+        if(seconds===3){
+
+            timer.parentElement
+            .querySelector(".timer-title")
+            .innerText=
+            "💗 Preparando nuevas coincidencias...";
+
+        }
+
+
+        if(seconds<=0){
+
+            clearInterval(countdown);
+
+            showPrank();
+
+        }
+
+    },1000);
+
+}
+
+
+/* REVELAR BROMA */
+
+function showPrank(){
+
+    results.style.display="none";
+
+    prank.style.display="flex";
+
+    createHearts();
+    createHearts();
+
+}
+
+
+/* CORAZONES */
+
+function createHearts(){
+
+    for(let i=0;i<20;i++){
+
+        setTimeout(function(){
+
+            const heart=
+            document.createElement("div");
+
+
+            heart.className=
+            "heart";
+
+
+            heart.innerText=
+            Math.random()>.5
+            ? "❤️"
+            : "💗";
+
+
+            heart.style.left=
+            Math.random()*95+"%";
+
+
+            heart.style.fontSize=
+            (18+Math.random()*22)+"px";
+
+
+            document.body
+            .appendChild(heart);
+
+
+            setTimeout(function(){
+
+                heart.remove();
+
+            },4000);
+
+
+        },i*130);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
